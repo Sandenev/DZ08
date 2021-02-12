@@ -1,4 +1,26 @@
 ---
+- name: install default-jdk
+  hosts: db
+  become: yes
+
+  tasks:
+    - name: Ensure default-jdk packege is present
+      apt:
+        name: default-jdk
+        state: present
+
+- name: install git
+  hosts: db
+  become: yes
+
+  tasks:
+    - name: Ensure git packege is present
+      apt:
+        name: git
+        state: present
+    - name: downloading repo
+      command: "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git"
+
 - name: install maven
   hosts: db
   become: yes
@@ -9,25 +31,30 @@
      name: maven
      state: present
 
-  - name: Ensure postgresql service is started
-    service:
-     name: postgresql
-     state: started
+  - name: running build
+    command: mvn package
+    become: yes
+    args:
+      chdir: boxfuse-sample-java-war-hello/
 
-- name: install tomcat
+  - name: copy builded package to local
+    fetch: src=/boxfuse-sample-java-war-hello/target/hello-1.0.war dest=/home
+
+
+- name: install tomcat9
   hosts: web
   become: yes
 
   tasks:
   - name: Ensure tomcat package is present
     apt:
-     name: tomcat
+     name: tomcat9
      state: present
 
   - name: Ensure hello-1.0.war is present
     copy:
-     src: index.html
-     dest: /var/www/html
+     src: hello-1.0.war
+     dest: /var/lib/tomcat9/webapps/
 
   - name: Ensure that tomcat is running
     service:
