@@ -20,6 +20,7 @@
         state: present
     - name: downloading repo
       command: "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git"
+      become: yes
 
 - name: install maven
   hosts: db
