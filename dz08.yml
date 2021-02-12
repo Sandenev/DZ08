@@ -1,0 +1,35 @@
+---
+- name: install maven
+  hosts: db
+  become: yes
+
+  tasks:
+  - name: Ensure maven packege is present
+    apt:
+     name: maven
+     state: present
+
+  - name: Ensure postgresql service is started
+    service:
+     name: postgresql
+     state: started
+
+- name: install tomcat
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: Ensure tomcat package is present
+    apt:
+     name: tomcat
+     state: present
+
+  - name: Ensure hello-1.0.war is present
+    copy:
+     src: index.html
+     dest: /var/www/html
+
+  - name: Ensure that tomcat is running
+    service:
+     name: tomcat
+     state: started
