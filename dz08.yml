@@ -39,10 +39,10 @@
       chdir: boxfuse-sample-java-war-hello/
 
   - name: copy builded package to local
-    synchronize:
-      src: /boxfuse-sample-java-war-helo/target/hello-1.0.war
-      dest: /home/ubuntu/
-      delegate_to: localhost
+    fetch:
+      src: /root/boxfuse-sample-java-war-hello/target/hello-1.0.war
+      dest: /home/ubuntu/1/
+      flat: yes
 
 - name: install tomcat9
   hosts: web
@@ -56,10 +56,10 @@
 
   - name: Ensure hello-1.0.war is present
     copy:
-     src: hello-1.0.war
+     src: /home/ubuntu/1/hello-1.0.war
      dest: /var/lib/tomcat9/webapps/
 
   - name: Ensure that tomcat is running
     service:
-     name: tomcat
+     name: tomcat9
      state: started
