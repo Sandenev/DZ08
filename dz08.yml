@@ -44,6 +44,16 @@
       dest: /home/ubuntu/1/
       flat: yes
 
+- name: install default-jre
+  hosts: wed
+  become: yes
+
+  tasks:
+    - name: Ensure default-jre packege is present
+      apt:
+        name: default-jre
+        state: present
+
 - name: install tomcat9
   hosts: web
   become: yes
