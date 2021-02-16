@@ -73,3 +73,10 @@
     service:
      name: tomcat9
      state: started
+
+#рекомендуется использовать модуль - git:
+    #repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+    #dest: /root/
+    #clone: yes
+    #update: yes
+    #вместо команды, тогда при повторении плейбука не придется удалять скачанный проект и заново его выкачивать
